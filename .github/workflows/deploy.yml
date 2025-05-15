@@ -1,0 +1,64 @@
+name: Deploy API to Hetzner
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Build with Maven
+      run: mvn clean package -DskipTests
+
+    - name: Rename JAR for consistent deployment
+      run: mv target/*.jar backend-auth.jar
+
+    - name: Copy JAR and .env to server
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER_NAME }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: 22
+        source: "backend-auth.jar,.env"
+        target: ${{ secrets.SERVER_DEPLOY_PATH }}
+
+    - name: Crear y reiniciar servicio systemd
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER_NAME }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          sudo bash -c 'cat > /etc/systemd/system/backend-auth-api.service << EOL
+[Unit]
+Description=Backend Auth API
+After=network.target
+
+[Service]
+User=gabriel
+WorkingDirectory=${{ secrets.SERVER_DEPLOY_PATH }}
+ExecStart=/usr/bin/java -jar ${{ secrets.SERVER_DEPLOY_PATH }}/backend-auth.jar --spring.config.location=${{ secrets.SERVER_DEPLOY_PATH }}/.env
+SuccessExitStatus=143
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOL'
+
+          sudo systemctl daemon-reload
+          sudo systemctl enable backend-auth-api.service
+          sudo systemctl restart backend-auth-api.service
