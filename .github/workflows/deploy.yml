@@ -20,7 +20,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Build with Maven
-      run: mvn clean package -DskipTests  # Construir el JAR, sin ejecutar tests
+      run: mvn clean package -Dmaven.test.skip=true
 
     - name: Rename JAR for consistent deployment
       run: mv target/*.jar mifinca-backend-auth.jar  # Renombrar el JAR generado
