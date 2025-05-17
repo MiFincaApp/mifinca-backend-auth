@@ -33,9 +33,9 @@
         </developer>
     </developers>
     <scm>
-        <url>https://github.com/MiFincaApp/Backend-Auth</url>
-        <connection>scm:git:git@github.com:MiFincaApp/Backend-Auth.git</connection>
-        <developerConnection>scm:git:git@github.com:MiFincaApp/Backend-Auth.git</developerConnection>
+        <url>https://github.com/MiFincaApp/mifinca-backend-auth</url>
+        <connection>scm:git:git@github.com:MiFincaApp/mifinca-backend-auth.git</connection>
+        <developerConnection>scm:git:git@github.com:MiFincaApp/mifinca-backend-auth.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
     <properties>

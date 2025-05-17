@@ -15,7 +15,7 @@ Este es el backend de MiFincaApp, una API REST desarrollada con Spring Boot para
 
 ## Tecnologías
 
-- Java 17
+- Java 21
 - Spring Boot
 - MySQL
 - Seguridad JWT
