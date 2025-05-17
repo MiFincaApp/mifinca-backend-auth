@@ -42,5 +42,5 @@ jobs:
         username: ${{ secrets.SERVER_USER_NAME }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
-          chmod +x /home/gabriel/scripts/mifinca-deploy-auth.sh
-          /home/gabriel/scripts/mifinca-deploy-auth.sh
+          chmod +x /home/gabriel/scripts/mifinca-backend-auth-deploy.sh
+          /home/gabriel/scripts/mifinca-backend-auth-deploy.sh
