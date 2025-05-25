@@ -8,6 +8,7 @@ import com.mifincaapp.auth.repository.UsuarioRepository;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +40,7 @@ public class RefreshTokenService {
             throw new RuntimeException("Ya tienes una sesión activa en este tipo de cliente: " + tipoCliente);
         }
 
-        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime now = OffsetDateTime.now(ZoneId.of("America/Bogota"));
         
         //Crear un nuevo refresh token
         RefreshToken refreshToken = new RefreshToken();
@@ -54,7 +55,7 @@ public class RefreshTokenService {
 
     public Optional<RefreshToken> verificarExpiracion(RefreshToken token) {
         
-        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime now = OffsetDateTime.now(ZoneId.of("America/Bogota"));
         
         if (token.getFechaExpiracion().isBefore(now)) {
             refreshTokenRepository.delete(token);
@@ -77,7 +78,7 @@ public class RefreshTokenService {
         //Eliminar el refresh token anterior
         refreshTokenRepository.delete(oldToken);
         
-        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime now = OffsetDateTime.now(ZoneId.of("America/Bogota"));
         
         //Crear uno nuevo para el mismo usuario
         RefreshToken nuevoToken = new RefreshToken();
