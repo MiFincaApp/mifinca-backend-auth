@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "refresh_token")
@@ -34,11 +34,11 @@ public class RefreshToken {
     @Column(name = "tipo_cliente", nullable = false)
     private TipoCliente tipoCliente;
 
-    @Column(name = "fecha_creacion", nullable = false, updatable = false, columnDefinition = "TIMESTAMP(6)")
-    private OffsetDateTime fechaCreacion;
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
     
-    @Column (name = "fecha_expiracion", nullable = false, columnDefinition = "TIMESTAMP(6)")
-    private OffsetDateTime fechaExpiracion;
+    @Column (name = "fecha_expiracion", nullable = false)
+    private LocalDateTime fechaExpiracion;
     
     // Getters 
     public Long getId() {
@@ -53,11 +53,11 @@ public class RefreshToken {
         return usuario;
     }
 
-    public OffsetDateTime getFechaCreacion() {
+    public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public OffsetDateTime getFechaExpiracion() {
+    public LocalDateTime getFechaExpiracion() {
         return fechaExpiracion;
     }
 
@@ -79,11 +79,11 @@ public class RefreshToken {
         this.usuario = usuario;
     }
 
-    public void setFechaCreacion(OffsetDateTime fechaCreacion) {
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public void setFechaExpiracion(OffsetDateTime fechaExpiracion) {
+    public void setFechaExpiracion(LocalDateTime fechaExpiracion) {
         this.fechaExpiracion = fechaExpiracion;
     }
 
