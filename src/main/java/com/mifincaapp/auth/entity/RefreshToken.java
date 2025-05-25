@@ -14,7 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 @Entity
 @Table(name = "refresh_token")
@@ -36,17 +37,10 @@ public class RefreshToken {
     private TipoCliente tipoCliente;
 
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
-    private Instant fechaCreacion;
+    private OffsetDateTime fechaCreacion;
     
     @Column (name = "fecha_expiracion", nullable = false)
-    private Instant fechaExpiracion;
-    
-    
-    @PrePersist
-    protected void onCreate(){
-        this.fechaCreacion = Instant.now();
-    }
-    
+    private OffsetDateTime fechaExpiracion;
     
     // Getters 
     public Long getId() {
@@ -61,11 +55,11 @@ public class RefreshToken {
         return usuario;
     }
 
-    public Instant getFechaCreacion() {
+    public OffsetDateTime getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public Instant getFechaExpiracion() {
+    public OffsetDateTime getFechaExpiracion() {
         return fechaExpiracion;
     }
 
@@ -87,11 +81,11 @@ public class RefreshToken {
         this.usuario = usuario;
     }
 
-    public void setFechaCreacion(Instant fechaCreacion) {
+    public void setFechaCreacion(OffsetDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public void setFechaExpiracion(Instant fechaExpiracion) {
+    public void setFechaExpiracion(OffsetDateTime fechaExpiracion) {
         this.fechaExpiracion = fechaExpiracion;
     }
 

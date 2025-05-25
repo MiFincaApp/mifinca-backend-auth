@@ -7,7 +7,8 @@ import com.mifincaapp.auth.repository.RefreshTokenRepository;
 import com.mifincaapp.auth.repository.UsuarioRepository;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
-import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,19 +39,24 @@ public class RefreshTokenService {
             throw new RuntimeException("Ya tienes una sesión activa en este tipo de cliente: " + tipoCliente);
         }
 
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.of("-05:00"));
+        
         //Crear un nuevo refresh token
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUsuario(usuario);
         refreshToken.setRefreshToken(UUID.randomUUID().toString());
-        refreshToken.setFechaCreacion(Instant.now());
-        refreshToken.setFechaExpiracion(Instant.now().plusMillis(refreshTokenDurationMs));
+        refreshToken.setFechaCreacion(now);
+        refreshToken.setFechaExpiracion(now.plusSeconds(refreshTokenDurationMs / 1000));
         refreshToken.setTipoCliente(tipoCliente);
         
         return refreshTokenRepository.save(refreshToken);
     }
 
     public Optional<RefreshToken> verificarExpiracion(RefreshToken token) {
-        if (token.getFechaExpiracion().isBefore(Instant.now())) {
+        
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.of("-05:00"));
+        
+        if (token.getFechaExpiracion().isBefore(now)) {
             refreshTokenRepository.delete(token);
             throw new RuntimeException("El refresh token ha expirado. Debes hacer login de nuevo.");
         }
@@ -71,13 +77,15 @@ public class RefreshTokenService {
         //Eliminar el refresh token anterior
         refreshTokenRepository.delete(oldToken);
         
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.of("-05:00"));
+        
         //Crear uno nuevo para el mismo usuario
         RefreshToken nuevoToken = new RefreshToken();
         nuevoToken.setUsuario(oldToken.getUsuario()); //Setea tipo de cliente
         nuevoToken.setTipoCliente(oldToken.getTipoCliente());
         nuevoToken.setRefreshToken(UUID.randomUUID().toString());
-        nuevoToken.setFechaCreacion(Instant.now()); // importante para consistencia
-        nuevoToken.setFechaExpiracion(Instant.now().plusMillis(refreshTokenDurationMs));
+        nuevoToken.setFechaCreacion(now); // importante para consistencia
+        nuevoToken.setFechaExpiracion(now.plusSeconds(refreshTokenDurationMs / 1000));
         
         return refreshTokenRepository.save(nuevoToken);
         
