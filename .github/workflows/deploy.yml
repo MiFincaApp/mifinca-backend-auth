@@ -41,6 +41,7 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER_NAME }}
         key: ${{ secrets.SERVER_SSH_KEY }}
+        port: 7048
         script: |
           chmod +x /home/gabriel/scripts/mifinca-backend-auth-deploy.sh
           /home/gabriel/scripts/mifinca-backend-auth-deploy.sh
