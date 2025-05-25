@@ -39,7 +39,7 @@ public class RefreshTokenService {
             throw new RuntimeException("Ya tienes una sesión activa en este tipo de cliente: " + tipoCliente);
         }
 
-        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.of("-05:00"));
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
         
         //Crear un nuevo refresh token
         RefreshToken refreshToken = new RefreshToken();
@@ -54,7 +54,7 @@ public class RefreshTokenService {
 
     public Optional<RefreshToken> verificarExpiracion(RefreshToken token) {
         
-        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.of("-05:00"));
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
         
         if (token.getFechaExpiracion().isBefore(now)) {
             refreshTokenRepository.delete(token);
@@ -77,7 +77,7 @@ public class RefreshTokenService {
         //Eliminar el refresh token anterior
         refreshTokenRepository.delete(oldToken);
         
-        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.of("-05:00"));
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
         
         //Crear uno nuevo para el mismo usuario
         RefreshToken nuevoToken = new RefreshToken();
