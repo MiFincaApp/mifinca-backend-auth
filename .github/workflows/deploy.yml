@@ -31,7 +31,7 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}              # IP del VPS
         username: ${{ secrets.SERVER_USER_NAME }}     # Usuario en el VPS
         key: ${{ secrets.SERVER_SSH_KEY }}            # Clave privada SSH
-        port: 22
+        port: 7048
         source: "mifinca-backend-auth.jar"            # Solo se envía el JAR
         target: ${{ secrets.SERVER_DEPLOY_PATH }}    
 
